@@ -1,0 +1,50 @@
+
+body * {
+      font-size: 12px;
+      font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif
+}
+
+.table{
+    table-layout: fixed;
+    margin:0;
+    padding:0;
+}
+
+.div-20 {
+	height:20px;
+	background-color:#f3f3f3;
+}
+
+#queryTable {
+	/*  border-bottom: 2px solid #eee; */
+	/*  border-right: 2px solid #eee;
+	 border-left: 2px solid #eee; */
+}
+
+#student-table,#teacher-table {
+	word-break:break-all; 
+	word-wrap:break-all;
+}
+
+#student-table th {
+  /*  background-color:rgb(254,173,107);
+  color:rgb(255,255,255) */
+   background-color:#D3D3D3;
+   color:black;
+   font-weight: normal;
+ }
+ 
+#teacher-table th {
+   /* background-color:#f5f5f5; */
+     background-color:#D3D3D3;
+   color:black;
+   font-weight: normal;
+ }
+ 
+ .div-table {
+/*  box-shadow: 3px 3px 3px #D3D3D3; */
+ }
+ 
+ .fixed-table-container thead th .sortable {
+    padding: 4px;
+}

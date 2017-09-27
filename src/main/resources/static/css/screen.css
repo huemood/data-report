@@ -1,0 +1,52 @@
+
+@media screen and (max-height:700px){
+ 	#ouchn{
+		width:573px;
+		height:432px;
+		margin-top:37px; 
+    }
+#ouchnform{
+	/*form灞�*/
+	padding-top: 167px;
+	
+	
+}    
+
+#input-position-controll{
+	/*form閲岀浜屽眰div*/
+	/*width:100%;
+	height:100%;*/
+	 float: right; 
+	width: 175px;
+	height:100%;
+	box-sizing:border-box;
+	
+}
+
+.input-controll{
+	
+	float: left; 
+	padding: 1px 0px;
+	display:block;
+	height:25px;
+	line-height:25px;
+	font-size:16px;
+    padding-left: 6px;
+	width:142px;
+	margin-bottom:7px;
+	/* text-align: center; */
+	border-radius: 6px; 
+	
+	border: 1px #d9d9d9 solid;
+
+}
+#submit-controll{
+	font-size: 16px;
+}
+.msg_ok1{
+	width:142px; height: 20px; float: left;padding-left: 6px;font-size: 12px
+}
+
+
+
+}

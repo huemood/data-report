@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.flower.bd.po.mapper.StudentActionMapper">
+ <resultMap id="StudentActionMap" type="StudentActionPo" >
+    <result property="courseName" column="coursename"/>
+	<result property="groupName" column="groupname"/>
+	<result property="stNo" column="st_no"/>
+	<result property="userName" column="username"/>
+	<result property="clickNum" column="click_num"/>
+	<result property="onlineNum" column="online_num"/>
+	<result property="viewresNum" column="viewres_num"/>
+	<result property="finshtaskNum" column="finshtask_num"/>
+	<result property="postNum" column="post_num"/>
+	<result property="notTaskNum" column="not_task_num"/>
+	<result property="notPostNum" column="not_post_num"/>
+	
+</resultMap>
+
+  <select id="getStudentActionCount" resultType="Integer" >
+  select count(t.col1) from (select count(1) as col1  from dm_f_student_action where  zzid like  #{zzid}  <if test="termId != null and termId != ''"> and termid=#{termId}</if>
+    group by coursename,groupname,st_no,username) t
+  </select> 
+  
+ <select id="getStudentActionListByPage" resultType="StudentActionPo" resultMap="StudentActionMap" parameterType="java.util.Map" >
+ select coursename,groupname,st_no,username,sum(click_num) as click_num ,sum(online_num) as online_num,sum(viewres_num) as viewres_num,
+ sum(finshtask_num) as finshtask_num,sum(post_num) as post_num ,sum(not_task_num) as not_task_num,sum(not_post_num)  as not_post_num 
+ from dm_f_student_action 
+ where   zzid like  #{condition.zzid}  <if test="condition.termId != null and condition.termId != ''"> and termid=#{condition.termId}</if>
+  group by coursename,groupname,st_no,username  
+   order by ${page.sidx} ${page.sord}  limit #{page.start},#{page.rows}
+ </select>
+ 
+  
+</mapper>  

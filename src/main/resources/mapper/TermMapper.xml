@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.bd.po.mapper.TermMapper">
+ <resultMap id="TermMap" type="TermPo" >
+    <result property="termId" column="termid"/>
+	<result property="termName" column="termName"/>
+</resultMap>
+
+  <select id="getAllTermList" resultType="TermPo" resultMap="TermMap">
+    select termid,termName from wd_term  order by termid desc
+  </select>   
+</mapper>

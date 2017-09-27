@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.bd.po.mapper.OrgMapper">
+ <resultMap id="OrgMap" type="OrgPo" >
+    <result property="id" column="OrganizationCode"/>
+	<result property="pId" column="ParentOrganizationCode"/>
+	<result property="name" column="OrganizationName"/>
+	<result property="isParent" column="leaf_node_flag"/>
+	
+</resultMap>
+
+  <select id="getOrgListByPid" resultType="OrgPo" resultMap="OrgMap">
+    select * from wd_organization where ParentOrganizationCode = #{pid} order by OrganizationCode asc
+  </select>  
+  
+  <select id="getOrgById" resultType="OrgPo" resultMap="OrgMap">
+    select * from wd_organization where OrganizationCode = #{id} order by OrganizationCode asc
+  </select>  
+  
+</mapper>
