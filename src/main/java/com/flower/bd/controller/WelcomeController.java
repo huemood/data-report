@@ -35,7 +35,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.flower.bd.po.MessageInfo;
+import com.flower.bd.po.OperationLogPo;
 import com.flower.bd.po.UserInfoPo;
+import com.flower.bd.service.OperationLogService;
 import com.flower.bd.service.UserInfoService;
 import com.flower.bd.util.GlobalConstant;
 
@@ -47,6 +49,8 @@ public class WelcomeController {
 	@Autowired
 	private UserInfoService userInfoService;
 	
+	@Autowired
+	private OperationLogService operationLogService;
 
 	@RequestMapping("/")
 	public String welcome( Map<String, Object> model) {
@@ -63,6 +67,12 @@ public class WelcomeController {
 		if (userInfoPo != null) {
 			HttpSession session = req.getSession();
 			session.setAttribute(GlobalConstant.USER_INFO, userInfoPo);
+			//日志，登录
+			OperationLogPo operationLogPo = new OperationLogPo();
+			operationLogPo.setUserID(userid);
+			operationLogPo.setOperationType(GlobalConstant.OperationType.LOGIN.getName());
+			operationLogPo.setOperationTime(new Date());
+			operationLogService.instert(operationLogPo);
 			
 			return "redirect:/index";
 			
@@ -79,6 +89,12 @@ public class WelcomeController {
 		UserInfoPo userinfo = (UserInfoPo) session.getAttribute(GlobalConstant.USER_INFO);
 		if (userinfo != null){
 			session.invalidate();
+			//日志,注销
+			OperationLogPo operationLogPo = new OperationLogPo();
+			operationLogPo.setUserID(userinfo.getUserid());
+			operationLogPo.setOperationType(GlobalConstant.OperationType.LOGOUT.getName());
+			operationLogPo.setOperationTime(new Date());
+			operationLogService.instert(operationLogPo);
 		}
 		return "redirect:/";
 	}

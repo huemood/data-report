@@ -21,55 +21,52 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.flower.bd.po.JqGridData;
 import com.alibaba.fastjson.JSONArray;
 import com.flower.bd.po.StudentActionPo;
-import com.flower.bd.po.TeacherActionPo;
 import com.flower.bd.po.TermPo;
-import com.flower.bd.service.ExcelService;
+import com.flower.bd.service.ExcelHistoryService;
 import com.flower.bd.service.LogService;
 import com.flower.bd.service.OrgService;
-import com.flower.bd.service.StudentService;
-import com.flower.bd.service.TeacherService;
+import com.flower.bd.service.StudentHistoryService;
 import com.flower.bd.util.ExcelUtil;
 
 /**
  * @author bc
  *
  */
-
+@RequestMapping(value="/history")
 @Controller
-public class TeacherController {
+public class StudentHistoryController {
 	
 	@Autowired
 	private OrgService orgService;
 	
 	@Autowired
-	private TeacherService teacherService;
+	private StudentHistoryService studentService;
 	
 	@Autowired
-	private ExcelService excelService;
-
+	private ExcelHistoryService excelService;
 	@Autowired
 	private LogService logService;
-	
-	@RequestMapping(value="/teacherMaster",method=RequestMethod.GET) 
+
+	@RequestMapping(value="/studentMaster",method=RequestMethod.GET) 
 	public String studentPage() {
-		return "org/teacherMaster";
+		return "history/studentMaster";
 	}
 	
-	@RequestMapping(value="/teacherAction")
-	public String teacherActionPage(HttpServletRequest req,Map<String,Object> model) {
+	@RequestMapping(value="/studentAction")
+	public String studentActionPage(HttpServletRequest req,Map<String,Object> model) {
 		String zzid = req.getParameter("orgId");
-		List<TermPo> termList = orgService.getAllTermPo();
+		List<TermPo> termList = orgService.getAllTermHistoryPo();
 		model.put("termList", termList);
 		model.put("zzid", zzid);
 		
 		String latestReportGenerateTime = logService.getlatestReportGenerateTime();
 		model.put("latestReportGenerateTime", latestReportGenerateTime);
 		
-		return "org/teacherAction";
+		return "history/studentAction";
 	}
 	
-	@RequestMapping(value="/teacherActionList",method=RequestMethod.POST,produces={MediaType.APPLICATION_JSON_UTF8_VALUE},consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE})
-	public @ResponseBody JqGridData<TeacherActionPo> getTeacherActionList(HttpServletRequest req) {
+	@RequestMapping(value="/studentActionList",method=RequestMethod.POST,produces={MediaType.APPLICATION_JSON_UTF8_VALUE},consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+	public @ResponseBody JqGridData<StudentActionPo> getStudentActionList(HttpServletRequest req) {
 		String zzid = req.getParameter("zzid");
 		String termId = req.getParameter("termId");
 		int pageindex = Integer.parseInt(req.getParameter("pageindex"));
@@ -85,18 +82,18 @@ public class TeacherController {
 			sord = "asc";
 		}
 		
-		return teacherService.getTeacherActionPoList(pageindex, pageSize, sidx, sord, termId, zzid);
+		return studentService.getStudentActionPoList(pageindex, pageSize, sidx, sord, termId, zzid);
 	}
 	
-	@RequestMapping(value="/teacherActionExport")
+	@RequestMapping(value="/studentActionExport")
 	@ResponseBody
     public void partExport(HttpServletRequest req,HttpServletResponse res){
 		String zzid = req.getParameter("zzid");
 		String termId = req.getParameter("termId");
 	
-        JSONArray ja = excelService.getTeacherData(termId, zzid);//获取业务数据集
-        Map<String,String> headMap = excelService.getTeacherHead();//获取属性-列头
-        String title = "教师行为分析统计表";
+        JSONArray ja = excelService.getStudentData(termId, zzid);//获取业务数据集
+        Map<String,String> headMap = excelService.getStudentHead();//获取属性-列头
+        String title = "学生行为分析统计表";
         ExcelUtil.downloadExcelFile(title,headMap,ja,res);
     }
 }

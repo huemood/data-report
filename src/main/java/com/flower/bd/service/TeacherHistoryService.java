@@ -14,19 +14,22 @@ import com.flower.bd.po.JqGridData;
 import com.flower.bd.po.Page;
 import com.flower.bd.po.ActionCondition;
 import com.flower.bd.po.StudentActionPo;
+import com.flower.bd.po.TeacherActionPo;
 import com.flower.bd.po.mapper.StudentActionMapper;
+import com.flower.bd.po.mapper.TeacherActionHistoryMapper;
+import com.flower.bd.po.mapper.TeacherActionMapper;
 
 /**
  * @author bc
  *
  */
 @Service
-public class StudentService {
+public class TeacherHistoryService {
 	
 	@Autowired
-	private StudentActionMapper sam;
+	private TeacherActionHistoryMapper tam;
 	
-	public JqGridData<StudentActionPo> getStudentActionPoList(int page,int rows,String sidx,String sord,String termId,String zzid) {
+	public JqGridData<TeacherActionPo> getTeacherActionPoList(int page,int rows,String sidx,String sord,String termId,String zzid) {
 		
 		zzid = zzid + "%";//
 		
@@ -38,7 +41,7 @@ public class StudentService {
 		searchMap.put("condition", condition);
 		
 		int count = 0;//记录总条数
-		Integer countTmp = sam.getStudentActionCount(termId, zzid);
+		Integer countTmp = tam.getTeacherActionCount(termId, zzid);
 		if (countTmp != null) {
 			count = countTmp.intValue();
 		}
@@ -51,9 +54,9 @@ public class StudentService {
 		
 		searchMap.put("page", pagePo);
 		
-		List<StudentActionPo> wps = sam.getStudentActionListByPage(searchMap);
+		List<TeacherActionPo> wps = tam.getTeacherActionListByPage(searchMap);
 		
-		JqGridData<StudentActionPo> jqGridData = new JqGridData<StudentActionPo>() ;
+		JqGridData<TeacherActionPo> jqGridData = new JqGridData<TeacherActionPo>() ;
 		jqGridData.setPage(pagePo.getPage());
 		jqGridData.setRecords(pagePo.getCount());
 		jqGridData.setTotal(pagePo.getTotalPages());
@@ -61,14 +64,11 @@ public class StudentService {
 		
 		return jqGridData;
 	}
-	//add 按课程查询 by 20171016 start
-    public JqGridData<StudentActionPo> getStudentActionPoListByCourseIDAndFrom(int page,int rows,String sidx,String sord,String termId,String zzid,Integer courseID,String fromSource) {
-		
-		zzid = zzid + "%";//
+	//add 按课程查询 by 20171017 start
+	public JqGridData<TeacherActionPo> getTeacherActionPoListByCourseIDAndFrom(int page,int rows,String sidx,String sord,String termId,Integer courseID,String fromSource) {
 		
 		ActionCondition condition = new ActionCondition();
 		condition.setTermId(termId);
-		condition.setZzid(zzid);
 		condition.setCourseID(courseID);
 		condition.setFromSource(fromSource);
 		
@@ -76,8 +76,7 @@ public class StudentService {
 		searchMap.put("condition", condition);
 		
 		int count = 0;//记录总条数
-		//Integer countTmp = sam.getStudentActionCount(termId, zzid);
-		Integer countTmp = sam.getStudentActionCountByCourseIDAndFrom( termId,zzid,courseID, fromSource);
+		Integer countTmp = tam.getTeacherActionCountByCourseIDAndFrom(courseID, fromSource, termId);
 		if (countTmp != null) {
 			count = countTmp.intValue();
 		}
@@ -90,10 +89,9 @@ public class StudentService {
 		
 		searchMap.put("page", pagePo);
 		
-		//List<StudentActionPo> wps = sam.getStudentActionListByPage(searchMap);
-		List<StudentActionPo> wps = sam.getStudentActionListByCourseIDAndFromByPage(searchMap);
+		List<TeacherActionPo> wps = tam.getTeacherActionListByCourseIDAndFromByPage(searchMap);
 		
-		JqGridData<StudentActionPo> jqGridData = new JqGridData<StudentActionPo>() ;
+		JqGridData<TeacherActionPo> jqGridData = new JqGridData<TeacherActionPo>() ;
 		jqGridData.setPage(pagePo.getPage());
 		jqGridData.setRecords(pagePo.getCount());
 		jqGridData.setTotal(pagePo.getTotalPages());
@@ -101,10 +99,10 @@ public class StudentService {
 		
 		return jqGridData;
 	}
-    //add 按课程查询 by 20171016 end
-    
-  //add 按课程shortname查询 by 20171026 start
-    public JqGridData<StudentActionPo> getStudentActionPoListByShortName(int page,int rows,String sidx,String sord,String zzid,String termId,String shortName) {
+	//add 按课程查询 by 20171017 end
+	
+	//add 按课程shortname查询 by 20171026 start
+	public JqGridData<TeacherActionPo> getTeacherActionPoListByShortName(int page,int rows,String sidx,String sord,String zzid,String termId,String shortName) {
 		
 		Map<String,Object> searchMap = new HashMap<String,Object>();
 		searchMap.put("zzid", zzid);
@@ -112,8 +110,7 @@ public class StudentService {
 		searchMap.put("shortName", shortName);
 		
 		int count = 0;//记录总条数
-		//Integer countTmp = sam.getStudentActionCount(termId, zzid);
-		Integer countTmp = sam.getStudentActionCountByShortName(zzid,termId, shortName);
+		Integer countTmp = tam.getTeacherActionCountByShortName(zzid,termId, shortName);
 		if (countTmp != null) {
 			count = countTmp.intValue();
 		}
@@ -126,10 +123,9 @@ public class StudentService {
 		
 		searchMap.put("page", pagePo);
 		
-		//List<StudentActionPo> wps = sam.getStudentActionListByPage(searchMap);
-		List<StudentActionPo> wps = sam.getStudentActionListByShortNameByPage(searchMap);
+		List<TeacherActionPo> wps = tam.getTeacherActionListByShortNameByPage(searchMap);
 		
-		JqGridData<StudentActionPo> jqGridData = new JqGridData<StudentActionPo>() ;
+		JqGridData<TeacherActionPo> jqGridData = new JqGridData<TeacherActionPo>() ;
 		jqGridData.setPage(pagePo.getPage());
 		jqGridData.setRecords(pagePo.getCount());
 		jqGridData.setTotal(pagePo.getTotalPages());
@@ -137,35 +133,20 @@ public class StudentService {
 		
 		return jqGridData;
 	}
-    //add 按课程shortname查询 by 20171026 end   
-    
+	//add 按课程shortname查询 by 20171026 end
+	
 	//因bootstrap table取的是po属性，因此需要转换成字段
 	private String getField(String attrName) {
 		String result = "";
 		switch (attrName) {
-		case "stNo":
-			result = "st_no";
-			break;
 		case "onlineNum":
 			result = "online_num";
 			break;
 		case "clickNum":
 			result = "click_num";
 			break;
-		case "viewresNum":
-			result = "viewres_num";
-			break;
-		case "finshtaskNum":
-			result = "finshtask_num";
-			break;
 		case "postNum":
 			result = "post_num";
-			break;
-		case "notTaskNum":
-			result = "not_task_num";
-			break;
-		case "notPostNum":
-			result = "not_post_num";
 			break;
 		default:
 			result = "groupname";

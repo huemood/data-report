@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.bd.po.mapper.OperationLogMapper">
+ <resultMap id="OperationLogMap" type="com.flower.bd.po.OperationLogPo" >
+ 	<result property="id" column="id"/>
+    <result property="userID" column="userID"/>
+    <result property="operationType" column="operationType"/>
+    <result property="operationTime" column="operationTime"/>
+</resultMap>
+  <select id="getOperationLogCount" parameterType="java.util.Map" resultType="Integer">
+  	SELECT COUNT(id) FROM user_operation_log 
+  	<where>
+  		<if test="userOperationLogEntity.userID != null and userOperationLogEntity.userID != ''">
+  			userID = #{userOperationLogEntity.userID}
+  		</if>
+  		<if test="userOperationLogEntity.operationType != null and userOperationLogEntity.operationType != ''">
+  			AND operationType = #{userOperationLogEntity.operationType}
+  		</if>
+  		<if test="userOperationLogEntity.operationTimeStart != null and userOperationLogEntity.operationTimeStart != ''">
+  			AND <![CDATA[operationTime >= #{userOperationLogEntity.operationTimeStart,jdbcType=VARCHAR}]]>
+  		</if>
+  		<if test="userOperationLogEntity.operationTimeEnd != null and userOperationLogEntity.operationTimeEnd != ''">
+  			AND <![CDATA[operationTime <= #{userOperationLogEntity.operationTimeEnd,jdbcType=VARCHAR}]]>
+  		</if>
+  	</where>
+  </select>
+  <select id="getUserOperationLogListByPage" resultType="OperationLogPo" resultMap="OperationLogMap" parameterType="java.util.Map">
+  	SELECT id,userID,operationType,operationTime FROM user_operation_log 
+  	<where>
+  		<if test="userOperationLogEntity.userID != null and userOperationLogEntity.userID != ''">
+  			userID = #{userOperationLogEntity.userID}
+  		</if>
+  		<if test="userOperationLogEntity.operationType != null and userOperationLogEntity.operationType != ''">
+  			AND operationType = #{userOperationLogEntity.operationType}
+  		</if>
+  		<if test="userOperationLogEntity.operationTimeStart != null and userOperationLogEntity.operationTimeStart != ''">
+  			AND <![CDATA[operationTime >= #{userOperationLogEntity.operationTimeStart,jdbcType=VARCHAR}]]>
+  		</if>
+  		<if test="userOperationLogEntity.operationTimeEnd != null and userOperationLogEntity.operationTimeEnd != ''">
+  			AND <![CDATA[operationTime <= #{userOperationLogEntity.operationTimeEnd,jdbcType=VARCHAR}]]>
+  		</if>
+  	</where>
+  	ORDER BY ${page.sidx} ${page.sord}  LIMIT #{page.start},#{page.rows}
+  </select>
+  <insert id="insert" parameterType="com.flower.bd.po.OperationLogPo"  useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO user_operation_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userID != null" >
+        userID,
+      </if>
+      <if test="operationType != null" >
+        operationType,
+      </if>
+      <if test="operationTime != null" >
+        operationTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userID != null" >
+        #{userID,jdbcType=VARCHAR},
+      </if>
+      <if test="operationType != null" >
+        #{operationType,jdbcType=VARCHAR},
+      </if>
+      <if test="operationTime != null" >
+        #{operationTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

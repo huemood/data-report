@@ -26,12 +26,15 @@
     
      <link rel="stylesheet" href="../../../zTreeV3/css/zTreeStyle/zTreeStyle.css" type="text/css">
   <script type="text/javascript" src="../../../zTreeV3/js/jquery.ztree.core.js"></script> -->
-  
- 
+   <!--script src="../../../js/angular2.min.js"></script-->
+   <script src="../../../js/bootstrap3-typeahead.min.js"></script>
+   
   <style>
   .sample * {
+      /*
       font-size: 12px;
       font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+       */
     }
   </style>
   <SCRIPT type="text/javascript" >
@@ -117,8 +120,15 @@
 		studentIframe.height(h);
 		console.log(h);
 	}
-	
-
+	/*
+	var app = angular.module('myApp', []);
+	  app.controller('customersCtrl', function($scope, $http) {
+	      $http.get("/course/getCourseList")
+	      .then(function (result) {
+	          $scope.names = result.data.records;
+	      });
+	  });
+	  */
   </SCRIPT>
       
   </head>
@@ -127,14 +137,61 @@
  
     <div class="container-fluid sample" >
       <div class="row">
-      	<div class="col-sm-3 col-md-2 sidebar">
-        	<ul id="tree" class="ztree" style="overflow-x:scroll"></ul>	
-	    </div>
-       </div>
-       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-3 col-md-2 sidebar">
+        	<div class="panel panel-default">
+			    <div class="panel-body">
+			       <div class="row">
+		        		<div class="col-sm-9 col-md-8">
+		        			<strong>输入课程名称</strong>
+		        		</div>
+				    </div>
+		        	<div class="row">
+		        		<div class="col-sm-10 col-md-9">
+		        			<input id="searchCourse" type="text" data-provide="typeahead" autocomplete="off">
+		        		</div>
+		        		<div class="col-sm-1 col-md-2">
+		        			<input id="searchBtn" type="button" value="搜索" onclick="searchCourse()"/>
+		        		</div>
+		        	</div>
+			    </div>
+			</div>
+        	<p>
+        	<div class="row">
+        		<div class="col-sm-6 col-md-5">
+        			<span class="glyphicon glyphicon-arrow-down">选择课程</span>
+        		</div>
+		    </div>
+        	<div class="row">
+        		<div class="col-sm-12 col-md-12">
+        			<table class="table table-hover">
+        				<thead>
+							<tr>
+								<th>ID</th>
+								<th>名称</th>
+								<th>来源</th>
+							</tr>
+						</thead>
+						<tbody id="courseTb" ></tbody>
+        			</table>
+        		</div>
+        	</div>
+        	
+        	<!--div ng-app="myApp" ng-controller="customersCtrl"> 
+				<table>
+				  <tr ng-repeat="x in names">
+				  	<td>{{ x.id }}</td>
+				    <td>{{ x.fullname }}</td>
+				    <td>{{ x.fromsource }}</td>
+				  </tr>
+				</table>
+			</div-->
+            <!--ul id="tree" class="ztree"></ul--> 
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">学生行为分析</h1>
            <IFRAME ID="sIframe" Name="sIframe" FRAMEBORDER=0 SCROLLING=auto width=100%  height="500px" SRC=""  ></IFRAME>
-        </div>
+
+         </div>
       </div>
     </div>
     
@@ -143,5 +200,67 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
      
+     <script>
+  $("#searchCourse").typeahead({
+      source: function (query, process) {
+          return $.ajax({
+              url: '/course/getCourseName',
+              type: 'post',
+              data: { courseName: query },
+              //dataType: 'array',
+              success: function (result) {
+            	  /*
+                  var resultList = result.map(function (item) {
+                      var aItem = { id: item.id, name: item.name };
+                      return JSON.stringify(aItem);
+                  });
+            	  */
+                  return process(result);
+              }
+          });
+      },
+      delay:500,
+      minLength:1,
+      items: 10,   //显示10条
+      delay: 0,  //延迟时间
+  });
+  var searchCourse = function(){
+	  $("#courseTb").empty();
+	  var fullName = $("#searchCourse").val();
+	  console.log("fullName:" + fullName);
+	  $.ajax({
+		  type:"POST",
+		  dataType:"json",
+		  url:"/course/getCourseList",
+		  data:{fullName:fullName},
+		  success:function (json){
+			  $.each(json,function(i,n){
+				  var tBody = "";
+				  tBody += "<tr onclick='csa("+i+")'><td class='_td"+i+"0'>" + n.id + "</td><td>" + n.fullname + "</td><td class='_td"+i+"2'>" + n.fromsource + "</td></tr>";
+				  $("#courseTb").append(tBody);
+			  });
+		  },
+	      error: function(json) {
+	      	alert("加载失败");
+	      }
+	  });
+  }
+  function csa(i){
+	  var courseID = $("._td"+i+"0").html();
+	  var fromSource = $("._td"+i+"2").html();
+	  console.log("id:" + $("._td"+i+"0").html());
+	  console.log("fromsource:" + $("._td"+i+"2").html());
+	  $("#sIframe").attr("src", "/course/studentAction?courseID="+courseID+"&fromSource="+fromSource);
+  }
+  /*
+  $(document).ready(function (){
+	  $("#courseTb tr").bind("click",function(){
+		 console.log("id:" + $(this).find("td").eq(0).html());
+		 console.log("fromsource:" + $(this).find("td").eq(1).html());
+	  });
+  });
+  */
+  </script>
   </body>
+  
 </html>

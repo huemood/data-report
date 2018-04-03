@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import com.flower.bd.po.OrgPo;
 import com.flower.bd.po.TermPo;
 import com.flower.bd.po.mapper.OrgMapper;
+import com.flower.bd.po.mapper.TermHistoryMapper;
 import com.flower.bd.po.mapper.TermMapper;
 
 /**
@@ -24,6 +25,9 @@ public class OrgService {
 	
 	@Autowired
 	private TermMapper termMapper;
+	
+	@Autowired
+	private TermHistoryMapper termHistoryMapper;
 	
 	public List<OrgPo> getOrgList(String id,String initId) {
 		List<OrgPo> result = new ArrayList<OrgPo>();
@@ -45,5 +49,16 @@ public class OrgService {
 	public List<TermPo> getAllTermPo() {
 		return termMapper.getAllTermList();
 	}
-
+	//获得历史学期数据
+	public List<TermPo> getAllTermHistoryPo() {
+		return termHistoryMapper.getAllTermList();
+	}
+	
+	//根据是否总部管理员，返回zzid，是：不返回；否：返回登录账户zzid
+	public String isNotHeadOfficeAdmin(String OrganizationCode){
+		OrgPo orgPo = orgMapper.getOrgById(OrganizationCode);
+		if (StringUtils.isEmpty(orgPo.getpId()) || orgPo.getpId().equals("NULL"))
+			return null;
+		return OrganizationCode;
+	}
 }

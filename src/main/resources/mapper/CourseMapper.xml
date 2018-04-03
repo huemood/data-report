@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.bd.po.mapper.CourseMapper">
+ <resultMap id="CourseMap" type="com.flower.bd.po.CoursePo" >
+ 	<result property="id" column="id"/>
+ 	<result property="shortname" column="shortname"/>
+    <result property="fullname" column="fullname"/>
+    <result property="fromsource" column="fromsource"/>
+</resultMap>
+  <select id="getCourseName" resultType="java.lang.String">
+  	SELECT fullname FROM dm_course WHERE fullname LIKE CONCAT('%','${courseName}','%')  GROUP BY fullname
+  </select>
+  <select id="getShortNameAndFullNameByCourseName" resultType="CoursePo" resultMap="CourseMap">
+  	SELECT 
+  		dm.shortname,dm.fullname 
+  	FROM 
+  		dm_course dm
+  	LEFT JOIN dm_mdl_course dmc ON dm.id = dmc.id AND dm.fromsource = dmc.fromsource AND dmc.termvalid = 1
+  	WHERE dm.fullname LIKE CONCAT('%','${courseName}','%') GROUP BY dm.shortname,dm.fullname
+  </select>
+  <select id="getCourseByName" resultType="CoursePo" resultMap="CourseMap">
+  	SELECT id,fullname,fromsource FROM dm_course WHERE fullname = #{fullname}
+  </select>
+  <select id="getCourseByNameAndZzid" resultType="CoursePo" resultMap="CourseMap">
+  	SELECT id,fullname,fromsource FROM dm_course WHERE fullname = #{fullname} AND zzid = #{zzid}
+  </select>
+</mapper>

@@ -20,8 +20,10 @@ public class StudentActionPo {
 	private int postNum;
 	private int notTaskNum;
 	private int notPostNum;
-
-	
+	//add 按课程查询 by 20171016 start
+	private int courseID;
+	private String fromSource;
+	//add 按课程查询 by 20171016 end
 	public String getCourseName() {
 		return courseName;
 	}
@@ -108,6 +110,22 @@ public class StudentActionPo {
 
 	public void setNotPostNum(int notPostNum) {
 		this.notPostNum = notPostNum;
+	}
+
+	public int getCourseID() {
+		return courseID;
+	}
+
+	public void setCourseID(int courseID) {
+		this.courseID = courseID;
+	}
+
+	public String getFromSource() {
+		return fromSource;
+	}
+
+	public void setFromSource(String fromSource) {
+		this.fromSource = fromSource;
 	}
 
 	

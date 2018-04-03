@@ -90,7 +90,7 @@
 				},
 				onClick: function(event, treeId, treeNode) {
 					var zTree = $.fn.zTree.getZTreeObj("tree");
-					studentIframe.attr("src", "/studentAction?orgId="+treeNode.id);
+					studentIframe.attr("src", "/history/studentAction?orgId="+treeNode.id);
 					return true;
 				}  
 			}

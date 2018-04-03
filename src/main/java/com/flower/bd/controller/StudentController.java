@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.flower.bd.po.StudentActionPo;
 import com.flower.bd.po.TermPo;
 import com.flower.bd.service.ExcelService;
+import com.flower.bd.service.LogService;
 import com.flower.bd.service.OrgService;
 import com.flower.bd.service.StudentService;
 import com.flower.bd.util.ExcelUtil;
@@ -43,6 +44,8 @@ public class StudentController {
 	
 	@Autowired
 	private ExcelService excelService;
+	@Autowired
+	private LogService logService;
 
 	@RequestMapping(value="/studentMaster",method=RequestMethod.GET) 
 	public String studentPage() {
@@ -55,6 +58,10 @@ public class StudentController {
 		List<TermPo> termList = orgService.getAllTermPo();
 		model.put("termList", termList);
 		model.put("zzid", zzid);
+		
+		String latestReportGenerateTime = logService.getlatestReportGenerateTime();
+		model.put("latestReportGenerateTime", latestReportGenerateTime);
+		
 		return "org/studentAction";
 	}
 	

@@ -23,10 +23,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.flower.bd.po.StudentActionPo;
 import com.flower.bd.po.TeacherActionPo;
 import com.flower.bd.po.TermPo;
+import com.flower.bd.service.ExcelHistoryService;
 import com.flower.bd.service.ExcelService;
 import com.flower.bd.service.LogService;
 import com.flower.bd.service.OrgService;
 import com.flower.bd.service.StudentService;
+import com.flower.bd.service.TeacherHistoryService;
 import com.flower.bd.service.TeacherService;
 import com.flower.bd.util.ExcelUtil;
 
@@ -35,17 +37,18 @@ import com.flower.bd.util.ExcelUtil;
  *
  */
 
+@RequestMapping(value="/history")
 @Controller
-public class TeacherController {
+public class TeacherHistoryController {
 	
 	@Autowired
 	private OrgService orgService;
 	
 	@Autowired
-	private TeacherService teacherService;
+	private TeacherHistoryService teacherService;
 	
 	@Autowired
-	private ExcelService excelService;
+	private ExcelHistoryService excelService;
 
 	@Autowired
 	private LogService logService;
@@ -58,7 +61,7 @@ public class TeacherController {
 	@RequestMapping(value="/teacherAction")
 	public String teacherActionPage(HttpServletRequest req,Map<String,Object> model) {
 		String zzid = req.getParameter("orgId");
-		List<TermPo> termList = orgService.getAllTermPo();
+		List<TermPo> termList = orgService.getAllTermHistoryPo();
 		model.put("termList", termList);
 		model.put("zzid", zzid);
 		

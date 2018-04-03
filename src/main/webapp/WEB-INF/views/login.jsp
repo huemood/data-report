@@ -26,8 +26,8 @@
                         ${message}
                      </c:if>
 			    </div>	
-				<input type="text"     class='input-controll'  id='user_name' name="username" placeholder='账号' value=''><br>
-				<input type="password" class='input-controll'  id='password' name="password"  placeholder='密码' value=''><br>
+				<input type="text"     class='input-controll'  id='user_name' name="username" placeholder='账号' value='zongbu'><br>
+				<input type="password" class='input-controll'  id='password' name="password"  placeholder='密码' value='admin2017'><br>
 				<input type="submit"   class='input-controll'  id='submit-controll' name="" value='登录'>
 				<div class="clear"></div>
 			<!-- </div> -->

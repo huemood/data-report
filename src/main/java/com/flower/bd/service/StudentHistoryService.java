@@ -14,17 +14,17 @@ import com.flower.bd.po.JqGridData;
 import com.flower.bd.po.Page;
 import com.flower.bd.po.ActionCondition;
 import com.flower.bd.po.StudentActionPo;
-import com.flower.bd.po.mapper.StudentActionMapper;
+import com.flower.bd.po.mapper.StudentActionHistoryMapper;
 
 /**
  * @author bc
  *
  */
 @Service
-public class StudentService {
+public class StudentHistoryService {
 	
 	@Autowired
-	private StudentActionMapper sam;
+	private StudentActionHistoryMapper sam;
 	
 	public JqGridData<StudentActionPo> getStudentActionPoList(int page,int rows,String sidx,String sord,String termId,String zzid) {
 		

@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="com.flower.bd.po.mapper.StudentActionMapper">
+<mapper namespace="com.flower.bd.po.mapper.StudentActionHistoryMapper">
  <resultMap id="StudentActionMap" type="StudentActionPo" >
     <result property="courseName" column="coursename"/>
 	<result property="groupName" column="groupname"/>
@@ -20,21 +20,21 @@
 </resultMap>
 
   <select id="getStudentActionCount" resultType="Integer" >
-  select count(t.col1) from (select count(1) as col1  from dm_f_student_action_backup where  zzid like  #{zzid}  <if test="termId != null and termId != ''"> and termid=#{termId}</if>
+  select count(t.col1) from (select count(1) as col1  from dm_f_student_action_backup_history where  zzid like  #{zzid}  <if test="termId != null and termId != ''"> and termid=#{termId}</if>
     group by coursename,groupname,st_no,username) t
   </select> 
   
  <select id="getStudentActionListByPage" resultType="StudentActionPo" resultMap="StudentActionMap" parameterType="java.util.Map" >
  select coursename,groupname,st_no,username,sum(click_num) as click_num ,sum(online_num) as online_num,sum(viewres_num) as viewres_num,
  sum(finshtask_num) as finshtask_num,sum(post_num) as post_num ,sum(not_task_num) as not_task_num,sum(not_post_num)  as not_post_num 
- from dm_f_student_action_backup 
+ from dm_f_student_action_backup_history 
  where   zzid like  #{condition.zzid}  <if test="condition.termId != null and condition.termId != ''"> and termid=#{condition.termId}</if>
   group by coursename,groupname,st_no,username  
    order by ${page.sidx} ${page.sord}  limit #{page.start},#{page.rows}
  </select>
  <!-- add 按课程查询带自动补全 by 20171016 start-->
   <select id="getStudentActionCountByCourseIDAndFrom" resultType="Integer" >
-  select count(t.col1) from (select count(1) as col1  from dm_f_student_action_backup 
+  select count(t.col1) from (select count(1) as col1  from dm_f_student_action_backup_history_history 
   where  
   	courseid=${courseID} AND fromsource=#{fromSource} 
   	<if test="termId != null and termId != ''"> and termid=#{termId}</if>
@@ -44,7 +44,7 @@
  <select id="getStudentActionListByCourseIDAndFromByPage" resultType="StudentActionPo" resultMap="StudentActionMap" parameterType="java.util.Map" >
  select coursename,groupname,st_no,username,sum(click_num) as click_num ,sum(online_num) as online_num,sum(viewres_num) as viewres_num,
  sum(finshtask_num) as finshtask_num,sum(post_num) as post_num ,sum(not_task_num) as not_task_num,sum(not_post_num)  as not_post_num 
- from dm_f_student_action_backup 
+ from dm_f_student_action_backup_history 
  where 
   courseid=${condition.courseID} AND fromsource=#{condition.fromSource} 
   <if test="condition.termId != null and condition.termId != ''"> and termid=#{condition.termId}</if>
@@ -56,7 +56,7 @@
  <!-- add 按课程shortname查询 by 20171026 start-->
   <select id="getStudentActionCountByShortName" resultType="Integer" >
     SELECT COUNT(tc0) FROM (
-  	SELECT sa.termid tc0 FROM dm_f_student_action_backup sa
+  	SELECT sa.termid tc0 FROM dm_f_student_action_backup_history sa
   	LEFT JOIN dm_course c ON sa.courseid = c.id AND sa.fromsource = c.fromsource
   	<where>
   		<if test="zzid !=null and zzid !=''">
@@ -76,7 +76,7 @@
   		coursename,groupname,st_no,username,sum(click_num) as click_num ,sum(online_num) as online_num,sum(viewres_num) as viewres_num,
  		sum(finshtask_num) as finshtask_num,sum(post_num) as post_num ,sum(not_task_num) as not_task_num,sum(not_post_num)  as not_post_num 
  	FROM 
- 		dm_f_student_action_backup sa
+ 		dm_f_student_action_backup_history sa
 	LEFT JOIN 
 		dm_course c ON sa.courseid = c.id AND sa.fromsource = c.fromsource
  	<where>

@@ -28,7 +28,7 @@
 	}
 
 	function initTable(){
-	    var url = "/teacherActionList?random="+Math.random();
+	    var url = "/course/teacherActionList?random="+Math.random();
 	    $('#teacher-table').bootstrapTable({
 	        method:'POST',
 	        dataType:'json',
@@ -104,8 +104,9 @@
 	//	pageSize, pageNumber, searchText, sortName, sortOrder. 
 	function queryParams(params) {
 	    var param = {
-	        termId : $("#termId").val(),
-	        zzid : $("#zzid").val(),
+	    	courseID : $("#courseID").val(),
+		    fromSource : $("#fromSource").val(),
+	    	termId : $("#termId").val(),
 	        //limit : this.limit, // 页面大小
 	        //offset : this.offset, // 页码
 	        pageindex : this.pageNumber,
@@ -137,7 +138,7 @@
 	
 	
 	function teacherActionExport() {
-		window.open("/teacherActionExport?zzid="+$("#zzid").val()+"&termId="+$("#termId").val(),"_blank");
+		window.open("/course/teacherActionExport?courseID="+$("#courseID").val()+"&fromSource="+$("#fromSource").val()+"&termId="+$("#termId").val(),"_blank");
 	}
 	
 	function onPostBody() {
@@ -176,7 +177,8 @@
 								</c:choose>  
 		                    </c:forEach>
 		                </select>
-		                <input type="hidden" id="zzid" name="zzid" value="${zzid}"/>
+		                <input type="hidden" id="courseID" name="courseID" value="${courseID}"/>
+		                <input type="hidden" id="fromSource" name="fromSource" value="${fromSource}"/>
 		          </td>
 		          <td style="width:80%;">
 		                <button type="button" id="queryBtn" onclick="doQuery();" class="btn btn-sm"><span class="glyphicon glyphicon-search"></span>查询</button>

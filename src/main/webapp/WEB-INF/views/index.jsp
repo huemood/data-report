@@ -21,7 +21,9 @@
     <link href="../../css/dashboard.css" rel="stylesheet">
     
     <script src="../../jquery/jquery.min.js"></script>
-    <script  src="../../js/bootstrap.min.js"></script>
+    <!--script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script-->
+        
+    <script src="../../js/bootstrap.min.js"></script>
     <script src="../../jqueryform/3.46/jquery.form.js" /></script>
     
     
@@ -31,15 +33,21 @@
  
   <style>
   .sample * {
+      /*
       font-size: 12px;
       font-family: Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+      */
     }
   </style>
   <SCRIPT type="text/javascript" >
   
-   var menuClick = function(menuUrl) {
+   var menuClick = function(menuUrl,tag) {
 	   /* $("#contentIframe").attr("src",menuUrl); */
-	   $("#contentDiv").load(menuUrl);
+	   
+	   $('.nav.navbar-nav li').removeClass('active');
+	   tag.parentNode.parentNode.parentNode.className="active";
+	   
+	  $("#contentDiv").load(menuUrl);
   };
   
 	 $(document).ready(function() {
@@ -116,13 +124,29 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;机构报表 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="#" onClick="menuClick('/studentMaster')">学生行为分析</a></li>
-                <li><a href="#" onClick="menuClick('/teacherMaster')" >教师行为分析</a></li>
+                <li><a href="#" onClick="menuClick('/studentMaster',this)">学生行为分析</a></li>
+                <li><a href="#" onClick="menuClick('/teacherMaster',this)" >教师行为分析</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;课程报表 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" onClick="menuClick('/course/studentMaster',this)">学生行为分析</a></li>
+                <li><a href="#" onClick="menuClick('/course/teacherMaster',this)" >教师行为分析</a></li>
               </ul>
             </li>
             <li><a href="#about"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;教师</a></li>
             <li><a href="#contact"><span class="glyphicon glyphicon-book"></span>&nbsp;&nbsp;学生</a></li>
-          
+            <li><a href="#" onClick="menuClick('/operationLog',this)"><span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;日志</a></li>
+            <li>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;机构历史报表 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" onClick="menuClick('/history/studentMaster',this)">学生行为分析</a></li>
+                <li><a href="#" onClick="menuClick('/history/teacherMaster',this)" >教师行为分析</a></li>
+              </ul>
+            </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">

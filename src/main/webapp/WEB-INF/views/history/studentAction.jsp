@@ -8,7 +8,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" href="../../../css/bootstrap.min.css" type="text/css">
  <link rel="stylesheet" href="../../../bootstrap-table/bootstrap-table.min.css">
-   <link rel="stylesheet" href="../../../css/action.css" type="text/css">
+  <link rel="stylesheet" href="../../../css/action.css" type="text/css">
 
  <script src="../../jquery/jquery.min.js"></script>
  <script src="../../js/bootstrap.min.js"></script>
@@ -24,12 +24,12 @@
 	});
 
 	function doQuery(params){
-	    $('#teacher-table').bootstrapTable('refresh');    //刷新表格
+	    $('#student-table').bootstrapTable('refresh');    //刷新表格
 	}
 
 	function initTable(){
-	    var url = "/teacherActionList?random="+Math.random();
-	    $('#teacher-table').bootstrapTable({
+	    var url = "/history/studentActionList?random="+Math.random();
+	    $('#student-table').bootstrapTable({
 	        method:'POST',
 	        dataType:'json',
 	        contentType: "application/x-www-form-urlencoded",
@@ -53,49 +53,95 @@
 	        onPostBody:onPostBody,
 	        toolbar: '#toolbar',
 	        columns: [
-	        {
+	        /*
+	        [{
+	        	title : '以下报表根据 ${latesReportGenerateTime} 采集数据生成',
+	        	halign: 'center',
+	        	"align":"center",
+	        	"colspan": 11
+	        }],
+	        [
+	         */
+	         {
 	            field : 'courseName',
 	            title : '课程',
+	            halign: 'center',
 	            align : 'center',
 	            valign : 'middle',
-	            width:  '20%',
+	            width:  '15%',
 	            sortable : true
 	        }, {
 	            field : 'groupName',
 	            title : '班级',
 	            align : 'center',
 	            valign : 'middle',
-	            width:  '20%',
+	            width:  '15%',
 	            sortable : true
-	        },  {
+	        }, {
+	            field : 'stNo',
+	            title : '学号',
+	            align : 'center',
+	            valign : 'middle',
+	            width:  '10%',
+	            sortable : true
+	        }, {
 	            field : 'userName',
 	            title : '姓名',
 	            align : 'center',
 	            valign : 'middle',
-	            width:  '15%',
+	            width:  '10%',
 	            sortable : true
 	        }, {
 	            field : 'clickNum',
 	            title : '点击次数',
 	            align : 'center',
 	            valign : 'middle',
-	            width:  '15%',
+	            width:  '10%',
 	            sortable : true
 	        }, {
 	            field : 'onlineNum',
 	            title : '上线天数',
 	            align : 'center',
 	            valign : 'middle',
-	            width:  '15%',
+	            width:  '10%',
+	            sortable : true
+	        }, {
+	            field : 'viewresNum',
+	            title : '浏览资源',
+	            align : 'center',
+	            valign : 'middle',
+	            width:  '10%',
+	            sortable : true
+	        }, {
+	            field : 'finshtaskNum',
+	            title : '完成作业',
+	            align : 'center',
+	            valign : 'middle',
+	            width:  '10%',
+	            sortable : true
+	        }, {
+	            field : 'notTaskNum',
+	            title : '未批作业',
+	            align : 'center',
+	            valign : 'middle',
+	            width:  '10%',
 	            sortable : true
 	        }, {
 	            field : 'postNum',
 	            title : '发帖数',
 	            align : 'center',
 	            valign : 'middle',
-	            width:  '15%',
+	            width:  '10%',
 	            sortable : true
-	        }]
+	        }, {
+	            field : 'notPostNum',
+	            title : '未回贴数',
+	            align : 'center',
+	            valign : 'middle',
+	            width:  '10%',
+	            sortable : true
+	        }//]
+	        ]
 	    });
 	}
 	
@@ -136,8 +182,13 @@
 	}
 	
 	
-	function teacherActionExport() {
-		window.open("/teacherActionExport?zzid="+$("#zzid").val()+"&termId="+$("#termId").val(),"_blank");
+	function studentActionExport() {
+		window.open("/history/studentActionExport?zzid="+$("#zzid").val()+"&termId="+$("#termId").val(),"_blank");
+		/* 　　$.ajax({
+		　　    type:"get",
+		　　    async:false,
+		　　   url:"/studentActionExport?zzid="+$("#zzid").val()+"&termId="+$("#termId").val()
+		　　}); */
 	}
 	
 	function onPostBody() {
@@ -145,25 +196,25 @@
 	}
 	
     function resizeFrame(){
-        var content_iframe = window.parent.document.getElementById("tIframe");//获取iframeID
-        var div_height = parseInt($("#queryTable").css("height")) + parseInt($("#teacher-table").css("height"));//使iframe高度等于子网页高度
+        var content_iframe = window.parent.document.getElementById("sIframe");//获取iframeID
+        var div_height = parseInt($("#queryTable").css("height")) + parseInt($("#student-table").css("height"));//使iframe高度等于子网页高度
         content_iframe.height = div_height + 150;
    } 
 
   </SCRIPT>
  </HEAD>
 
-<BODY>
-
-    
-	  <table class="table" id="queryTable">
-	      <form  method="post">
+<BODY >
+    <div class="div-table">
+        <form  method="post" >
+	     <table class="table" id="queryTable" >
+	  
 	        <tr>
 		          <td style="width:5%">
 		                                               学期: 
 		          </td >
 		          <td style="width:15%">
-		            <select class="form-control  input-sm" id="termId" name="termId">   
+		            <select class="form-control  input-sm " id="termId" name="termId">   
 		                    <option value="" selected="selected">全部</option>
 		                    <c:forEach var="data" varStatus="i" items="${termList}">
 			                    <c:choose>
@@ -179,20 +230,22 @@
 		                <input type="hidden" id="zzid" name="zzid" value="${zzid}"/>
 		          </td>
 		          <td style="width:80%;">
-		                <button type="button" id="queryBtn" onclick="doQuery();" class="btn btn-sm"><span class="glyphicon glyphicon-search"></span>查询</button>
-		                <button type="button" class="btn  btn-sm" id="exportExcelBtn" onclick="teacherActionExport();"><span class="glyphicon glyphicon-save-file"></span>下载</button>
+		                <button type="button" id="queryBtn" onclick="doQuery();" class="btn  btn-sm"><span class="glyphicon glyphicon-search"></span>查询</button>
+		                <button type="button" class="btn   btn-sm" id="exportExcelBtn" onclick="studentActionExport();"><span class="glyphicon glyphicon-save-file"></span>下载</button>
 		          </td>
                
               </tr>
-               </form>
+              
 	      </table>
-	  <div class="div-20">
+	 </form>
+	 </div>
+	 
+	<div class="div-20">
 	</div>
-    
-    <div>
-    	<div id="toolbar"><span style="color:#9d9d9d;font-size:14px">以下报表根据 ${latestReportGenerateTime} 采集数据生成</span></div>
-      <table id="teacher-table">
-        </table>
-    </div>
+
+	<div class="div-table">
+		<div id="toolbar"><span style="color:#9d9d9d;font-size:14px">以下报表根据 ${latestReportGenerateTime} 采集数据生成</span></div>
+		<table id="student-table" ></table>
+	</div>
 </BODY>
 </HTML>

@@ -16,7 +16,7 @@ import com.flower.bd.po.TeacherActionPo;
  *
  */
 @Mapper
-public interface TeacherActionMapper {
+public interface TeacherActionHistoryMapper {
 	
 	List<TeacherActionPo> getTeacherActionListByPage(Map<String,Object> map);
 	

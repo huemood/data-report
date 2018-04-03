@@ -51,8 +51,18 @@
 	        exportDataType: 'all',
 	        responseHandler: responseHandler,
 	        onPostBody:onPostBody,
+	        toolbar: '#toolbar',
 	        columns: [
-	        {
+	        /*
+	        [{
+	        	title : '以下报表根据 ${latesReportGenerateTime} 采集数据生成',
+	        	halign: 'center',
+	        	"align":"center",
+	        	"colspan": 11
+	        }],
+	        [
+	         */
+	         {
 	            field : 'courseName',
 	            title : '课程',
 	            halign: 'center',
@@ -130,7 +140,8 @@
 	            valign : 'middle',
 	            width:  '10%',
 	            sortable : true
-	        }]
+	        }//]
+	        ]
 	    });
 	}
 	
@@ -231,11 +242,10 @@
 	 
 	<div class="div-20">
 	</div>
-    
-    <div class="div-table">
-      <table id="student-table" >
-        </table>
-    </div>
-      
+
+	<div class="div-table">
+		<div id="toolbar"><span style="color:#9d9d9d;font-size:14px">以下报表根据 ${latestReportGenerateTime} 采集数据生成</span></div>
+		<table id="student-table" ></table>
+	</div>
 </BODY>
 </HTML>

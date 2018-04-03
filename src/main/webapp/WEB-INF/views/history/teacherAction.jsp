@@ -28,7 +28,7 @@
 	}
 
 	function initTable(){
-	    var url = "/teacherActionList?random="+Math.random();
+	    var url = "/history/teacherActionList?random="+Math.random();
 	    $('#teacher-table').bootstrapTable({
 	        method:'POST',
 	        dataType:'json',
@@ -137,7 +137,7 @@
 	
 	
 	function teacherActionExport() {
-		window.open("/teacherActionExport?zzid="+$("#zzid").val()+"&termId="+$("#termId").val(),"_blank");
+		window.open("/history/teacherActionExport?zzid="+$("#zzid").val()+"&termId="+$("#termId").val(),"_blank");
 	}
 	
 	function onPostBody() {

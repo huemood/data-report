@@ -24,14 +24,14 @@ import com.flower.bd.po.TeacherActionPo;
  *
  */
 @Service
-public class ExcelService {
+public class ExcelHistoryService {
 	
 
 	@Autowired
-	private StudentService studentService;
+	private StudentHistoryService studentService;
 
 	@Autowired
-	private TeacherService teacherService;
+	private TeacherHistoryService teacherService;
 	
 	public JSONArray getStudentData(String termId,String zzid) {
 		JqGridData<StudentActionPo> datas = studentService.getStudentActionPoList(1, Integer.MAX_VALUE, "groupname", "asc", termId, zzid);
